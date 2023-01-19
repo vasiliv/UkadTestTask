@@ -30,8 +30,8 @@ namespace UkadTestTask
                 if (node.Attributes["href"].Value.StartsWith("http"))
                 {
                     stopwatch.Stop();
-                    TimeSpan ts = stopwatch.Elapsed;
-                    urlList.Add(new Url { UrlName = node.Attributes["href"].Value, ElapsedTime = ts.ToString() });
+                    //TimeSpan ts = stopwatch.Elapsed;
+                    urlList.Add(new Url { UrlName = node.Attributes["href"].Value, ElapsedTime = stopwatch.ElapsedTicks });
                 }
             }
             Console.WriteLine($"Urls(html documents) found after crawling a website: {urlList.Count}");
@@ -41,13 +41,10 @@ namespace UkadTestTask
             List<Url> xmlList = new List<Url>();
             xmlDoc.Load("Sitemap.xml");            
             XmlNodeList xmlNodes = xmlDoc.SelectNodes("/root/url");
+            
             foreach (XmlNode node in xmlNodes)
-            {
-                stopwatch.Start();                
-                xmlList.Add(new Url { UrlName = node.InnerText });
-                stopwatch.Stop();
-                TimeSpan ts = stopwatch.Elapsed;
-                xmlList.Add(new Url { ElapsedTime = ts.ToString() });                                
+            {                                
+                xmlList.Add(new Url { UrlName = node.InnerText.Replace("\n", "").Trim() });                                                
             }
             Console.WriteLine($"Urls found in sitemap: {xmlList.Count}");
 

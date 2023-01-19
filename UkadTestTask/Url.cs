@@ -9,6 +9,6 @@ namespace UkadTestTask
     public class Url
     {
         public string UrlName { get; set; }
-        public string ElapsedTime { get; set; }
+        public long ElapsedTime { get; set; }
     }
 }
