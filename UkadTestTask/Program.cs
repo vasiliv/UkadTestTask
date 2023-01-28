@@ -16,7 +16,7 @@ string urlName = "https://jwt.io";
 //string urlName = "https://lenta.ru";
 
 HtmlWeb web = new HtmlWeb();
-if (Helper.urlExists(urlName))
+if (Helper.UrlExists(urlName))
 {
     HtmlDocument htmlDoc = web.Load(urlName);
 
@@ -39,7 +39,7 @@ else
 XmlDocument xmlDoc = new XmlDocument();
 
 string sitemapUrl = Helper.ConvertUrlToSitemap(urlName);
-if (Helper.urlExists(sitemapUrl))
+if (Helper.UrlExists(sitemapUrl))
 {
     xmlDoc.Load(sitemapUrl);
 
@@ -62,25 +62,17 @@ var urlListOnlyName = urlList.Select(x => x.UrlName);
 
 Console.WriteLine();
 Console.WriteLine("1. Merge ordered by timing");
-var totalList = xmlList.Concat(urlList).OrderBy(i => i.ElapsedTime);
-foreach (var item in totalList)
-{
-    Console.WriteLine($"{item.UrlName} {item.ElapsedTime}");
-}
+var totalList = xmlList.Concat(urlList).ToList();
+Helper.PrintOrderedByTime(totalList);
 
 Console.WriteLine();
-Console.WriteLine("2. Except URL");
-var exceptXml = xmlListOnlyName.Except(urlListOnlyName);
-foreach (var item in exceptXml)
-{
-    Console.WriteLine(item);
-}
+Console.WriteLine("2. Urls founded in sitemap.xml but not founded after crawling a web site:");
+var exceptXml = xmlListOnlyName.Except(urlListOnlyName).ToList();
+Helper.Print(exceptXml);
 
 Console.WriteLine();
-Console.WriteLine("3. Except Sitemap.xml");
-var exceptUrl = urlListOnlyName.Except(xmlListOnlyName);
-foreach (var item in exceptUrl)
-{
-    Console.WriteLine(item);
-}
+Console.WriteLine("3. Urls founded by the crawling the website but not in sitemap.xml");
+var exceptUrl = urlListOnlyName.Except(xmlListOnlyName).ToList();
+Helper.Print(exceptUrl);
+
 Console.ReadLine();

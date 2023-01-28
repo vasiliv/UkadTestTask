@@ -10,7 +10,7 @@ namespace UkadTestTask
 {
     public static class Helper
     {
-        public static bool urlExists(string url)
+        public static bool UrlExists(string url)
         {
             using (var client = new WebClient())
             {
@@ -44,6 +44,22 @@ namespace UkadTestTask
             timer.Stop();
 
             return timer.Elapsed.Milliseconds;            
+        }
+        public static void PrintOrderedByTime(List<Url> list)
+        {            
+            foreach (var item in list.OrderBy(x => x.ElapsedTime))
+            {
+                Console.WriteLine($"{item.UrlName}, Response time(ms): {item.ElapsedTime}");
+            }
+            Console.WriteLine("\n");
+        }
+        public static void Print(List<string> list)
+        {            
+            foreach (var item in list)
+            {
+                Console.WriteLine($"{item}");
+            }
+            Console.WriteLine("\n");
         }
     }
 }
