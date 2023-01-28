@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -29,6 +30,20 @@ namespace UkadTestTask
         public static string ConvertUrlToSitemap(string url)
         {
             return $"{url}/sitemap.xml";
+        }
+        public static int GetResponseTime(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            Stopwatch timer = new Stopwatch();
+
+            timer.Start();
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            response.Close();
+
+            timer.Stop();
+
+            return timer.Elapsed.Milliseconds;            
         }
     }
 }
